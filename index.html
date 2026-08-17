@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Longview — You have time.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Playfair+Display:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --black: #0a0a0a;
+      --white: #fafafa;
+      --gray-100: #f5f5f5;
+      --gray-200: #e5e5e5;
+      --gray-400: #a3a3a3;
+      --gray-500: #737373;
+      --gray-600: #525252;
+      --gray-800: #262626;
+      --warm: #b8a089;
+      --warm-muted: #d4c4b0;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', -apple-system, sans-serif;
+      font-weight: 300;
+      background: var(--white);
+      color: var(--black);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 100;
+      padding: 1.2rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.5s;
+    }
+
+    nav.scrolled {
+      background: rgba(250, 250, 250, 0.8);
+      backdrop-filter: blur(30px);
+      -webkit-backdrop-filter: blur(30px);
+    }
+
+    nav.dark-bg {
+      background: rgba(10, 10, 10, 0.8);
+      backdrop-filter: blur(30px);
+      -webkit-backdrop-filter: blur(30px);
+    }
+
+    .nav-logo {
+      color: var(--black);
+      transition: color 0.5s;
+      display: flex;
+      align-items: center;
+    }
+
+    nav.dark-bg .nav-logo,
+    nav.dark-bg .nav-links a { color: var(--white); }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.82rem;
+      font-weight: 400;
+      text-decoration: none;
+      color: var(--gray-500);
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover { color: var(--black); }
+    nav.dark-bg .nav-links a:hover { color: var(--white); }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 8rem 2rem 6rem;
+    }
+
+    .hero-watch {
+      width: 280px;
+      height: 280px;
+      margin-bottom: 3rem;
+      opacity: 0;
+      animation: fadeIn 1.5s ease 0s forwards;
+    }
+
+    .hero-watch svg {
+      width: 100%;
+      height: 100%;
+      filter: drop-shadow(0 25px 60px rgba(0,0,0,0.08));
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      font-weight: 300;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeIn 1.2s ease 0.3s forwards;
+    }
+
+    .hero-sub {
+      font-size: clamp(1rem, 2vw, 1.15rem);
+      font-weight: 300;
+      color: var(--gray-500);
+      max-width: 380px;
+      line-height: 1.7;
+      opacity: 0;
+      animation: fadeIn 1.2s ease 0.7s forwards;
+    }
+
+    /* ─── STORY SECTIONS ─── */
+    .story {
+      padding: 10rem 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .story-inner {
+      max-width: 620px;
+    }
+
+    .story h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 300;
+      line-height: 1.4;
+      letter-spacing: -0.02em;
+      margin-bottom: 2rem;
+    }
+
+    .story p {
+      font-size: 1.05rem;
+      line-height: 1.9;
+      color: var(--gray-500);
+    }
+
+    .story p + p {
+      margin-top: 1.5rem;
+    }
+
+    /* ─── DARK SECTIONS ─── */
+    .dark {
+      background: var(--black);
+      color: var(--white);
+    }
+
+    .dark p { color: var(--gray-400); }
+
+    /* ─── FEELING ─── */
+    .feeling {
+      padding: 12rem 2rem;
+    }
+
+    .feeling-ticker {
+      font-family: 'DM Sans', monospace;
+      font-size: clamp(2.5rem, 7vw, 5rem);
+      font-weight: 300;
+      color: var(--gray-800);
+      letter-spacing: -0.02em;
+      margin: 2.5rem 0;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .feeling-ticker .sec {
+      color: var(--gray-600);
+    }
+
+    /* ─── BRIDGE ─── */
+    .bridge {
+      padding: 14rem 2rem;
+      text-align: center;
+    }
+
+    .bridge h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 300;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+    }
+
+    .bridge p {
+      font-size: 1.1rem;
+      color: var(--gray-500);
+      margin-top: 1.5rem;
+      font-weight: 300;
+    }
+
+    /* ─── PRODUCT ─── */
+    .product {
+      padding: 8rem 2rem 10rem;
+      background: var(--gray-100);
+    }
+
+    .product-header {
+      text-align: center;
+      margin-bottom: 5rem;
+    }
+
+    .product-label {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gray-400);
+      margin-bottom: 1.5rem;
+    }
+
+    .product-header h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.5rem, 5vw, 3.5rem);
+      font-weight: 300;
+      letter-spacing: -0.02em;
+    }
+
+    .product-showcase {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6rem;
+    }
+
+    .product-watch {
+      width: 380px;
+      height: 380px;
+      flex-shrink: 0;
+    }
+
+    .product-watch svg {
+      width: 100%;
+      height: 100%;
+      filter: drop-shadow(0 30px 80px rgba(0,0,0,0.1));
+    }
+
+    .product-specs { max-width: 360px; }
+
+    .spec-row {
+      border-top: 1px solid var(--gray-200);
+      padding: 1.1rem 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+
+    .spec-row:last-of-type { border-bottom: 1px solid var(--gray-200); }
+
+    .spec-label {
+      font-size: 0.85rem;
+      color: var(--gray-500);
+    }
+
+    .spec-value {
+      font-size: 0.85rem;
+      font-weight: 400;
+      text-align: right;
+    }
+
+    /* ─── HOW ─── */
+    .how {
+      padding: 8rem 2rem 10rem;
+    }
+
+    .how-header {
+      text-align: center;
+      margin-bottom: 5rem;
+    }
+
+    .how-header h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      font-weight: 300;
+    }
+
+    .how-steps {
+      max-width: 900px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 3rem;
+    }
+
+    .how-step {
+      text-align: center;
+      padding: 0 1rem;
+    }
+
+    .step-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      font-weight: 300;
+      color: var(--warm);
+      margin-bottom: 1.2rem;
+      display: block;
+    }
+
+    .how-step h3 {
+      font-size: 0.95rem;
+      font-weight: 500;
+      margin-bottom: 0.8rem;
+    }
+
+    .how-step p {
+      font-size: 0.88rem;
+      line-height: 1.7;
+      color: var(--gray-500);
+    }
+
+    /* ─── CTA ─── */
+    .final-cta {
+      padding: 10rem 2rem;
+      background: var(--black);
+      color: var(--white);
+      text-align: center;
+    }
+
+    .final-cta h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4.5vw, 3.2rem);
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+      line-height: 1.35;
+    }
+
+    .final-cta .price {
+      font-size: 1.3rem;
+      font-weight: 400;
+      margin-bottom: 0.3rem;
+    }
+
+    .final-cta .price-note {
+      font-size: 0.82rem;
+      color: var(--gray-600);
+      margin-bottom: 3rem;
+    }
+
+    .final-cta .slogan {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.15rem;
+      font-weight: 300;
+      color: var(--gray-500);
+      margin-top: 3rem;
+    }
+
+    /* ─── BUTTONS ─── */
+    .btn {
+      display: inline-block;
+      padding: 1rem 2.8rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      text-decoration: none;
+      border-radius: 50px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-white {
+      background: var(--white);
+      color: var(--black);
+    }
+
+    .btn-white:hover {
+      background: var(--gray-200);
+      transform: scale(1.02);
+    }
+
+    .btn-dark {
+      background: var(--black);
+      color: var(--white);
+    }
+
+    .btn-dark:hover {
+      background: var(--gray-800);
+      transform: scale(1.02);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--gray-500);
+      border: 1px solid var(--gray-800);
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--gray-500);
+      color: var(--white);
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      padding: 2.5rem 3rem;
+      background: var(--black);
+      border-top: 1px solid rgba(255,255,255,0.05);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--gray-600);
+      font-size: 0.75rem;
+    }
+
+    footer .nav-logo { color: var(--gray-400); font-size: 0.95rem; }
+
+    .footer-links {
+      display: flex;
+      gap: 1.5rem;
+      list-style: none;
+    }
+
+    .footer-links a {
+      color: var(--gray-600);
+      text-decoration: none;
+      font-size: 0.75rem;
+      transition: color 0.3s;
+    }
+
+    .footer-links a:hover { color: var(--gray-400); }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(25px);
+      transition: opacity 1s ease, transform 1s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .year-hand-anim {
+      transform-origin: 200px 200px;
+      animation: sweep 3s cubic-bezier(0.25, 0.1, 0.25, 1) 1s forwards;
+    }
+
+    @keyframes sweep {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(115deg); }
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .product-showcase { flex-direction: column; gap: 3rem; }
+      .product-watch { width: 280px; height: 280px; }
+      .product-specs { max-width: 100%; padding: 0 1rem; }
+      .how-steps { grid-template-columns: 1fr; max-width: 360px; }
+      .hero-watch { width: 220px; height: 220px; }
+      footer { flex-direction: column; gap: 1rem; text-align: center; }
+      .footer-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav id="nav">
+    <div class="nav-logo"><svg width="100" height="30" viewBox="0 0 160 46"><path d="M 58 12 Q 80 4 102 12" fill="none" stroke="currentColor" stroke-width="0.7" stroke-linecap="round"/><text x="80" y="35" text-anchor="middle" font-family="'DM Sans', sans-serif" font-size="18" font-weight="500" letter-spacing="1.5" fill="currentColor">longview</text></svg></div>
+    <ul class="nav-links">
+      <li><a href="#arc">Arc</a></li>
+      <li><a href="#order">Pre-order</a></li>
+    </ul>
+  </nav>
+
+  <!-- ─── HERO ─── -->
+  <section class="hero">
+    <div class="hero-watch">
+      <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+        <rect x="178" y="0" width="44" height="55" rx="5" fill="#3a3a3a" />
+        <rect x="178" y="345" width="44" height="55" rx="5" fill="#3a3a3a" />
+        <circle cx="200" cy="200" r="142" fill="#1a1a1a" />
+        <circle cx="200" cy="200" r="132" fill="#f5f2ed" />
+        <g fill="none" stroke="#1a1a1a" stroke-width="1.2">
+          <line x1="200" y1="76" x2="200" y2="92" />
+          <line x1="200" y1="76" x2="200" y2="90" transform="rotate(36 200 200)" />
+          <line x1="200" y1="76" x2="200" y2="90" transform="rotate(72 200 200)" />
+          <line x1="200" y1="76" x2="200" y2="90" transform="rotate(108 200 200)" />
+          <line x1="200" y1="76" x2="200" y2="90" transform="rotate(144 200 200)" />
+          <line x1="200" y1="76" x2="200" y2="92" transform="rotate(180 200 200)" />
+          <line x1="200" y1="76" x2="200" y2="90" transform="rotate(216 200 200)" />
+          <line x1="200" y1="76" x2="200" y2="90" transform="rotate(252 200 200)" />
+          <line x1="200" y1="76" x2="200" y2="90" transform="rotate(288 200 200)" />
+          <line x1="200" y1="76" x2="200" y2="90" transform="rotate(324 200 200)" />
+        </g>
+        <g font-family="'DM Sans', sans-serif" font-size="11.5" fill="#1a1a1a" text-anchor="middle" font-weight="400">
+          <text x="200" y="108">0</text>
+          <text x="270" y="126" transform="rotate(36 270 122)">10</text>
+          <text x="314" y="174" transform="rotate(72 314 170)">20</text>
+          <text x="318" y="236" transform="rotate(108 318 232)">30</text>
+          <text x="282" y="288" transform="rotate(144 282 284)">40</text>
+          <text x="200" y="308">50</text>
+          <text x="118" y="288" transform="rotate(-144 118 284)">60</text>
+          <text x="82" y="236" transform="rotate(-108 82 232)">70</text>
+          <text x="86" y="174" transform="rotate(-72 86 170)">80</text>
+          <text x="130" y="126" transform="rotate(-36 130 122)">90</text>
+        </g>
+        <text x="200" y="173" font-family="'DM Sans', sans-serif" font-size="8.5" fill="#a3a3a3" text-anchor="middle" letter-spacing="3" font-weight="500">LONGVIEW</text>
+        <text x="200" y="240" font-family="'Playfair Display', serif" font-size="10" fill="#a3a3a3" text-anchor="middle" letter-spacing="1" font-weight="300" font-style="italic">Arc</text>
+        <g class="year-hand-anim">
+          <line x1="200" y1="200" x2="200" y2="96" stroke="#b8a089" stroke-width="1.5" stroke-linecap="round" />
+          <circle cx="200" cy="200" r="3.5" fill="#b8a089" />
+        </g>
+        <circle cx="200" cy="200" r="2" fill="#1a1a1a" />
+        <rect x="340" y="193" width="12" height="14" rx="3" fill="#1a1a1a" />
+      </svg>
+    </div>
+    <h1>Your whole life.<br>At a glance.</h1>
+    <p class="hero-sub">You have time. Don't let the world tell you otherwise.</p>
+  </section>
+
+  <!-- ─── YOU KNOW THIS FEELING ─── -->
+  <section class="story feeling dark">
+    <div class="story-inner reveal">
+      <h2>You know this feeling.</h2>
+      <p>You check the time. It's later than you thought. A small knot forms — you're behind on something, late for something, running out of something. The seconds tick and you move faster.</p>
+      <div class="feeling-ticker" id="ticker">12:00:00</div>
+      <p>That's what time feels like now. A pressure. A score you're always losing. Every clock, every notification, every glowing screen — all of it designed to keep your head down, moving faster, focused on the next minute.</p>
+    </div>
+  </section>
+
+  <!-- ─── BUT SOMETIMES ─── -->
+  <section class="story dark" style="padding-top: 0;">
+    <div class="story-inner reveal">
+      <h2>But sometimes you do look up.</h2>
+      <p>On a long drive. Standing outside at night. Holding someone's hand without thinking about what's next. In those moments, time doesn't feel like pressure — it feels like space. Like there's enough of it. Like you're exactly where you should be.</p>
+      <p>We wanted to build something that gives you that feeling every time you look at your wrist.</p>
+    </div>
+  </section>
+
+  <!-- ─── BRIDGE ─── -->
+  <section class="bridge">
+    <div class="reveal">
+      <h2>What if time felt like<br>something you have —<br>not something you're losing?</h2>
+    </div>
+  </section>
+
+  <!-- ─── THE IDEA ─── -->
+  <section class="story">
+    <div class="story-inner reveal">
+      <h2>So we made a different kind of watch.</h2>
+      <p>One hand. One dial. Zero to one hundred. Your whole life, right there. Not to remind you it's ending — to show you how much of it there is. How much room you have to grow, to wander, to change your mind completely.</p>
+      <p>When you glance at Arc, you don't feel behind. You feel oriented. Like pulling over on a road trip to check the map — not because you're lost, but because you want to see how far you've come and how open the road still is.</p>
+    </div>
+  </section>
+
+  <!-- ─── PRODUCT ─── -->
+  <section class="product" id="arc">
+    <div class="product-header">
+      <span class="product-label reveal">First edition</span>
+      <h2 class="reveal">Arc</h2>
+    </div>
+    <div class="product-showcase">
+      <div class="product-watch reveal">
+        <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+          <rect x="178" y="0" width="44" height="55" rx="5" fill="#3a3a3a" />
+          <rect x="178" y="345" width="44" height="55" rx="5" fill="#3a3a3a" />
+          <circle cx="200" cy="200" r="142" fill="#1a1a1a" />
+          <circle cx="200" cy="200" r="132" fill="#f5f2ed" />
+          <g fill="none" stroke="#1a1a1a" stroke-width="1.2">
+            <line x1="200" y1="76" x2="200" y2="92" />
+            <line x1="200" y1="76" x2="200" y2="90" transform="rotate(36 200 200)" />
+            <line x1="200" y1="76" x2="200" y2="90" transform="rotate(72 200 200)" />
+            <line x1="200" y1="76" x2="200" y2="90" transform="rotate(108 200 200)" />
+            <line x1="200" y1="76" x2="200" y2="90" transform="rotate(144 200 200)" />
+            <line x1="200" y1="76" x2="200" y2="92" transform="rotate(180 200 200)" />
+            <line x1="200" y1="76" x2="200" y2="90" transform="rotate(216 200 200)" />
+            <line x1="200" y1="76" x2="200" y2="90" transform="rotate(252 200 200)" />
+            <line x1="200" y1="76" x2="200" y2="90" transform="rotate(288 200 200)" />
+            <line x1="200" y1="76" x2="200" y2="90" transform="rotate(324 200 200)" />
+          </g>
+          <g font-family="'DM Sans', sans-serif" font-size="11.5" fill="#1a1a1a" text-anchor="middle" font-weight="400">
+            <text x="200" y="108">0</text>
+            <text x="270" y="126" transform="rotate(36 270 122)">10</text>
+            <text x="314" y="174" transform="rotate(72 314 170)">20</text>
+            <text x="318" y="236" transform="rotate(108 318 232)">30</text>
+            <text x="282" y="288" transform="rotate(144 282 284)">40</text>
+            <text x="200" y="308">50</text>
+            <text x="118" y="288" transform="rotate(-144 118 284)">60</text>
+            <text x="82" y="236" transform="rotate(-108 82 232)">70</text>
+            <text x="86" y="174" transform="rotate(-72 86 170)">80</text>
+            <text x="130" y="126" transform="rotate(-36 130 122)">90</text>
+          </g>
+          <text x="200" y="173" font-family="'DM Sans', sans-serif" font-size="8.5" fill="#a3a3a3" text-anchor="middle" letter-spacing="3" font-weight="500">LONGVIEW</text>
+          <text x="200" y="240" font-family="'Playfair Display', serif" font-size="10" fill="#a3a3a3" text-anchor="middle" letter-spacing="1" font-weight="300" font-style="italic">Arc</text>
+          <g transform="rotate(115 200 200)">
+            <line x1="200" y1="200" x2="200" y2="96" stroke="#b8a089" stroke-width="1.5" stroke-linecap="round" />
+            <circle cx="200" cy="200" r="3.5" fill="#b8a089" />
+          </g>
+          <circle cx="200" cy="200" r="2" fill="#1a1a1a" />
+          <rect x="340" y="193" width="12" height="14" rx="3" fill="#1a1a1a" />
+        </svg>
+      </div>
+      <div class="product-specs reveal">
+        <div class="spec-row">
+          <span class="spec-label">Case</span>
+          <span class="spec-value">316L Steel, 40mm</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-label">Dial</span>
+          <span class="spec-value">Sandstone, applied indices</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-label">Crystal</span>
+          <span class="spec-value">Domed sapphire, AR coated</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-label">Strap</span>
+          <span class="spec-value">Full-grain Italian leather</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-label">Movement</span>
+          <span class="spec-value">Swiss quartz, year-calibrated</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-label">Water resistance</span>
+          <span class="spec-value">50 meters</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-label">Warranty</span>
+          <span class="spec-value">2 years</span>
+        </div>
+        <div style="margin-top: 2.5rem;">
+          <a href="#order" class="btn btn-dark">Pre-order — $295</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── HOW IT WORKS ─── -->
+  <section class="how">
+    <div class="how-header">
+      <span class="product-label reveal" style="display:block; margin-bottom:1.5rem; color: var(--gray-400);">Simple by design</span>
+      <h2 class="reveal">Set your birthday. That's it.</h2>
+    </div>
+    <div class="how-steps">
+      <div class="how-step reveal">
+        <span class="step-num">1</span>
+        <h3>Set your age</h3>
+        <p>Turn the crown to your current year. The hand finds your place on the dial.</p>
+      </div>
+      <div class="how-step reveal">
+        <span class="step-num">2</span>
+        <h3>It moves with you</h3>
+        <p>No ticking. No alerts. Just a quiet hand that travels with you through your years.</p>
+      </div>
+      <div class="how-step reveal">
+        <span class="step-num">3</span>
+        <h3>Look up</h3>
+        <p>See where you are. See the road ahead. Remember that you have time.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FINAL CTA ─── -->
+  <section class="final-cta" id="order">
+    <div class="reveal">
+      <h2>If this feels right, come with us.</h2>
+      <div class="price">$295</div>
+      <div class="price-note">Free worldwide shipping. 2-year warranty.</div>
+      <div class="btn-group">
+        <a href="#" class="btn btn-white" onclick="alert('Pre-order flow coming soon.'); return false;">Pre-order Arc</a>
+      </div>
+      <div class="slogan">You have time.</div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="nav-logo"><svg width="100" height="30" viewBox="0 0 160 46"><path d="M 58 12 Q 80 4 102 12" fill="none" stroke="currentColor" stroke-width="0.7" stroke-linecap="round"/><text x="80" y="35" text-anchor="middle" font-family="'DM Sans', sans-serif" font-size="18" font-weight="500" letter-spacing="1.5" fill="currentColor">longview</text></svg></div>
+    <ul class="footer-links">
+      <li><a href="#">Shipping</a></li>
+      <li><a href="#">Returns</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+    <div>&copy; 2026 Longview</div>
+  </footer>
+
+  <script>
+    const nav = document.getElementById('nav');
+    const darkSections = document.querySelectorAll('.dark, .final-cta');
+
+    function updateNav() {
+      const scrollY = window.scrollY;
+      const navBottom = nav.getBoundingClientRect().bottom;
+      nav.classList.toggle('scrolled', scrollY > 40);
+
+      let inDark = false;
+      darkSections.forEach(sec => {
+        const rect = sec.getBoundingClientRect();
+        if (rect.top < navBottom && rect.bottom > 0) inDark = true;
+      });
+
+      if (inDark) {
+        nav.classList.add('dark-bg');
+        nav.classList.remove('scrolled');
+      } else {
+        nav.classList.remove('dark-bg');
+      }
+    }
+
+    window.addEventListener('scroll', updateNav, { passive: true });
+    updateNav();
+
+    const ticker = document.getElementById('ticker');
+    function updateTicker() {
+      const now = new Date();
+      let h = now.getHours();
+      const ampm = h >= 12 ? 'PM' : 'AM';
+      h = h % 12 || 12;
+      const m = String(now.getMinutes()).padStart(2, '0');
+      const s = String(now.getSeconds()).padStart(2, '0');
+      ticker.innerHTML = h + ':' + m + ':<span class="sec">' + s + '</span> ' + ampm;
+    }
+    setInterval(updateTicker, 1000);
+    updateTicker();
+
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+    reveals.forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
