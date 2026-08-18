@@ -35,10 +35,10 @@ export default async function handler(req, res) {
     // For now, generate a placeholder tracking number
     const trackingNumber = 'PENDING-FEDEX-' + orderId.slice(0, 8).toUpperCase();
 
-    // Save tracking number and move to shipped
+    // Save tracking number but stay in Processing — FedEx pickup scan will move to Shipped
     const rows = await sql`
       UPDATE orders
-      SET tracking_number = ${trackingNumber}, status = 'shipped', updated_at = now()
+      SET tracking_number = ${trackingNumber}, updated_at = now()
       WHERE id = ${orderId}
       RETURNING *
     `;

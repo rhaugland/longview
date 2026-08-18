@@ -3,5 +3,11 @@
     "api/**/*.js": {
       "runtime": "@vercel/node@3.2.0"
     }
-  }
+  },
+  "crons": [
+    {
+      "path": "/api/cron/track",
+      "schedule": "*/15 * * * *"
+    }
+  ]
 }

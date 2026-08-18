@@ -567,7 +567,9 @@
           : '';
 
         const shipCell = showShipAction
-          ? `<td><button class="ship-btn" id="ship-${order.id}" onclick="createLabel('${order.id}')">Create Label</button></td>`
+          ? order.tracking_number
+            ? `<td><div class="td-muted" style="font-size:0.72rem;">${esc(order.tracking_number)}</div><div style="font-size:0.68rem;color:var(--green);margin-top:0.2rem;">Awaiting pickup</div></td>`
+            : `<td><button class="ship-btn" id="ship-${order.id}" onclick="createLabel('${order.id}')">Create Label</button></td>`
           : '';
 
         const trackingCell = showTracking
