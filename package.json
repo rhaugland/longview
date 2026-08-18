@@ -17,6 +17,9 @@
   "bugs": {
     "url": "https://github.com/rhaugland/longview/issues"
   },
+  "engines": {
+    "node": "20.x"
+  },
   "homepage": "https://github.com/rhaugland/longview#readme",
   "dependencies": {
     "@neondatabase/serverless": "^1.1.0"
