@@ -41,74 +41,6 @@
       min-height: 100vh;
     }
 
-    /* Login */
-    .login-screen {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem;
-    }
-
-    .login-screen h1 {
-      font-family: 'DM Serif Display', serif;
-      font-size: 1.8rem;
-      font-weight: 400;
-      margin-bottom: 0.5rem;
-    }
-
-    .login-screen p {
-      color: var(--gray-500);
-      font-size: 0.9rem;
-      margin-bottom: 2rem;
-    }
-
-    .login-form {
-      display: flex;
-      gap: 0.75rem;
-      width: 100%;
-      max-width: 400px;
-    }
-
-    .login-form input {
-      flex: 1;
-      padding: 0.75rem 1rem;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.9rem;
-      border: 1px solid var(--gray-200);
-      border-radius: 8px;
-      outline: none;
-      background: var(--white);
-    }
-
-    .login-form input:focus { border-color: var(--black); }
-
-    .login-form button {
-      padding: 0.75rem 1.5rem;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.85rem;
-      font-weight: 400;
-      background: var(--black);
-      color: var(--white);
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-
-    .login-form button:hover { background: #262626; }
-
-    .login-error {
-      color: var(--red);
-      font-size: 0.82rem;
-      margin-top: 1rem;
-      display: none;
-    }
-
-    /* Dashboard */
-    .dashboard { display: none; }
-
     .dash-nav {
       padding: 1.2rem 2rem;
       background: var(--white);
@@ -134,68 +66,6 @@
       color: var(--gray-400);
     }
 
-    .dash-logout {
-      font-size: 0.8rem;
-      color: var(--gray-500);
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-family: 'DM Sans', sans-serif;
-    }
-
-    .dash-logout:hover { color: var(--black); }
-
-    /* Stats */
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1rem;
-      padding: 2rem;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .stat-card {
-      background: var(--white);
-      border: 1px solid var(--gray-200);
-      border-radius: 10px;
-      padding: 1.5rem;
-    }
-
-    .stat-card .stat-label {
-      font-size: 0.7rem;
-      font-weight: 500;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--gray-400);
-      margin-bottom: 0.5rem;
-    }
-
-    .stat-card .stat-number {
-      font-family: 'DM Serif Display', serif;
-      font-size: 2rem;
-      font-weight: 400;
-    }
-
-    /* Orders table */
-    .orders-section {
-      padding: 0 2rem 2rem;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .orders-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1rem;
-    }
-
-    .orders-header h2 {
-      font-size: 1rem;
-      font-weight: 500;
-    }
-
     .refresh-btn {
       font-family: 'DM Sans', sans-serif;
       font-size: 0.8rem;
@@ -213,270 +83,234 @@
       color: var(--black);
     }
 
-    .orders-table {
-      width: 100%;
+    /* Kanban columns */
+    .board {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      padding: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+      align-items: start;
+    }
+
+    .column {
       background: var(--white);
       border: 1px solid var(--gray-200);
       border-radius: 10px;
       overflow: hidden;
     }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
+    .column-header {
+      padding: 1rem 1.2rem;
+      border-bottom: 1px solid var(--gray-200);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
-    thead {
-      background: var(--gray-100);
-    }
-
-    th {
-      text-align: left;
-      padding: 0.8rem 1rem;
+    .column-title {
       font-size: 0.7rem;
       font-weight: 500;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--gray-500);
-      border-bottom: 1px solid var(--gray-200);
     }
 
-    td {
-      padding: 1rem;
-      font-size: 0.85rem;
-      border-bottom: 1px solid var(--gray-100);
-      vertical-align: middle;
-    }
-
-    tr:last-child td { border-bottom: none; }
-
-    tr:hover { background: var(--gray-50); }
-
-    .order-name { font-weight: 400; }
-
-    .order-email {
-      color: var(--gray-500);
-      font-size: 0.8rem;
-    }
-
-    .order-address {
-      font-size: 0.8rem;
-      color: var(--gray-500);
-      max-width: 200px;
-    }
-
-    .order-date {
-      font-size: 0.8rem;
-      color: var(--gray-500);
-    }
-
-    /* Status badges */
-    .badge {
-      display: inline-block;
-      padding: 0.25rem 0.65rem;
+    .column-count {
       font-size: 0.7rem;
       font-weight: 500;
-      letter-spacing: 0.03em;
+      color: var(--gray-400);
+      background: var(--gray-100);
+      padding: 0.15rem 0.5rem;
       border-radius: 50px;
     }
 
-    .badge-pending { background: var(--yellow-bg); color: var(--yellow); }
-    .badge-confirmed { background: var(--blue-bg); color: var(--blue); }
-    .badge-shipped { background: var(--purple-bg); color: var(--purple); }
-    .badge-delivered { background: var(--green-bg); color: var(--green); }
-    .badge-cancelled { background: var(--red-bg); color: var(--red); }
-
-    /* Status select */
-    .status-select {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.78rem;
-      padding: 0.3rem 0.5rem;
-      border: 1px solid var(--gray-200);
-      border-radius: 6px;
-      background: var(--white);
-      cursor: pointer;
-      outline: none;
+    .column-body {
+      padding: 0.75rem;
+      min-height: 200px;
     }
 
-    .status-select:focus { border-color: var(--black); }
+    /* Order cards */
+    .order-card {
+      background: var(--gray-50);
+      border: 1px solid var(--gray-200);
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 0.6rem;
+      transition: box-shadow 0.2s;
+    }
 
-    .empty-state {
-      text-align: center;
-      padding: 4rem 2rem;
+    .order-card:last-child { margin-bottom: 0; }
+
+    .order-card:hover {
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+
+    .card-name {
+      font-size: 0.88rem;
+      font-weight: 400;
+      margin-bottom: 0.3rem;
+    }
+
+    .card-email {
+      font-size: 0.75rem;
+      color: var(--gray-500);
+      margin-bottom: 0.5rem;
+    }
+
+    .card-detail {
+      font-size: 0.72rem;
       color: var(--gray-400);
-      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 0.75rem;
+      padding-top: 0.6rem;
+      border-top: 1px solid var(--gray-200);
+    }
+
+    .card-date {
+      font-size: 0.7rem;
+      color: var(--gray-400);
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 0.4rem;
+    }
+
+    .move-btn {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 500;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      border: 1px solid var(--gray-200);
+      background: var(--white);
+      color: var(--gray-600);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .move-btn:hover {
+      border-color: var(--black);
+      color: var(--black);
+    }
+
+    .empty-col {
+      text-align: center;
+      padding: 2rem 1rem;
+      color: var(--gray-400);
+      font-size: 0.8rem;
     }
 
     .loading {
       text-align: center;
-      padding: 3rem;
+      padding: 4rem 2rem;
       color: var(--gray-400);
       font-size: 0.85rem;
+      grid-column: 1 / -1;
     }
 
-    @media (max-width: 768px) {
-      .stats { grid-template-columns: repeat(2, 1fr); }
-      .orders-table { overflow-x: auto; }
-      table { min-width: 700px; }
+    /* Column accent colors */
+    .col-new .column-header { border-bottom-color: var(--yellow); }
+    .col-pending .column-header { border-bottom-color: var(--blue); }
+    .col-shipped .column-header { border-bottom-color: var(--purple); }
+    .col-delivered .column-header { border-bottom-color: var(--green); }
+
+    @media (max-width: 900px) {
+      .board { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 580px) {
+      .board { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Login -->
-  <div class="login-screen" id="login-screen">
-    <h1>longview admin</h1>
-    <p>Enter your admin key to continue.</p>
-    <div class="login-form">
-      <input type="password" id="admin-key" placeholder="Admin key" autofocus>
-      <button onclick="login()">Enter</button>
+  <div class="dash-nav">
+    <div class="dash-nav-left">
+      <svg width="140" height="28" viewBox="0 0 180 28"><text x="0" y="20" font-family="'DM Sans', sans-serif" font-size="16" font-weight="300" letter-spacing="2.5" fill="currentColor">long</text><text x="70" y="20" font-family="'DM Sans', sans-serif" font-size="16" font-weight="300" letter-spacing="2.5" fill="#b8a089">view</text></svg>
+      <span>Admin</span>
     </div>
-    <p class="login-error" id="login-error">Invalid key. Try again.</p>
+    <button class="refresh-btn" onclick="loadOrders()">Refresh</button>
   </div>
 
-  <!-- Dashboard -->
-  <div class="dashboard" id="dashboard">
-    <div class="dash-nav">
-      <div class="dash-nav-left">
-        <svg width="140" height="28" viewBox="0 0 180 28"><text x="0" y="20" font-family="'DM Sans', sans-serif" font-size="16" font-weight="300" letter-spacing="2.5" fill="currentColor">long</text><text x="70" y="20" font-family="'DM Sans', sans-serif" font-size="16" font-weight="300" letter-spacing="2.5" fill="#b8a089">view</text></svg>
-        <span>Admin</span>
-      </div>
-    </div>
-
-    <div class="stats" id="stats">
-      <div class="stat-card">
-        <div class="stat-label">Total Orders</div>
-        <div class="stat-number" id="stat-total">—</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Pending</div>
-        <div class="stat-number" id="stat-pending">—</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Confirmed</div>
-        <div class="stat-number" id="stat-confirmed">—</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Revenue</div>
-        <div class="stat-number" id="stat-revenue">—</div>
-      </div>
-    </div>
-
-    <div class="orders-section">
-      <div class="orders-header">
-        <h2>Orders</h2>
-        <button class="refresh-btn" onclick="loadOrders()">Refresh</button>
-      </div>
-      <div class="orders-table">
-        <div class="loading" id="loading">Loading orders...</div>
-        <table style="display:none;" id="orders-table">
-          <thead>
-            <tr>
-              <th>Customer</th>
-              <th>Email</th>
-              <th>Phone</th>
-              <th>Shipping</th>
-              <th>Status</th>
-              <th>Date</th>
-              <th>Update</th>
-            </tr>
-          </thead>
-          <tbody id="orders-body"></tbody>
-        </table>
-        <div class="empty-state" id="empty-state" style="display:none;">No orders yet. They'll show up here.</div>
-      </div>
-    </div>
+  <div class="board" id="board">
+    <div class="loading" id="loading">Loading orders...</div>
   </div>
 
   <script>
-    // No auth for now — load dashboard directly
-    document.getElementById('login-screen').style.display = 'none';
-    document.getElementById('dashboard').style.display = 'block';
-    loadOrders();
+    const STAGES = [
+      { key: 'pending', label: 'New', class: 'col-new', next: 'confirmed' },
+      { key: 'confirmed', label: 'Confirmed', class: 'col-pending', next: 'shipped' },
+      { key: 'shipped', label: 'Shipped', class: 'col-shipped', next: 'delivered' },
+      { key: 'delivered', label: 'Delivered', class: 'col-delivered', next: null },
+    ];
 
     async function loadOrders() {
-      const loading = document.getElementById('loading');
-      const table = document.getElementById('orders-table');
-      const empty = document.getElementById('empty-state');
-      const body = document.getElementById('orders-body');
-
-      loading.style.display = 'block';
-      table.style.display = 'none';
-      empty.style.display = 'none';
+      const board = document.getElementById('board');
+      board.innerHTML = '<div class="loading">Loading orders...</div>';
 
       try {
-        const res = await fetch('/api/orders', {
-          headers: {}
-        });
-
-        if (!res.ok) {
-          if (res.status === 401) return logout();
-          throw new Error('Failed to load');
-        }
+        const res = await fetch('/api/orders');
+        if (!res.ok) throw new Error('Failed to load');
 
         const { orders } = await res.json();
 
-        loading.style.display = 'none';
+        board.innerHTML = STAGES.map(stage => {
+          const stageOrders = orders.filter(o => o.status === stage.key);
 
-        if (orders.length === 0) {
-          empty.style.display = 'block';
-          updateStats([]);
-          return;
-        }
+          const cards = stageOrders.length === 0
+            ? '<div class="empty-col">No orders</div>'
+            : stageOrders.map(order => `
+              <div class="order-card">
+                <div class="card-name">${escapeHtml(order.first_name)} ${escapeHtml(order.last_name)}</div>
+                <div class="card-email">${escapeHtml(order.email)}</div>
+                <div class="card-detail">
+                  ${escapeHtml(order.phone)}<br>
+                  ${escapeHtml(order.address)}, ${escapeHtml(order.city)}, ${escapeHtml(order.state)} ${escapeHtml(order.zip)}
+                </div>
+                <div class="card-footer">
+                  <span class="card-date">${formatDate(order.created_at)}</span>
+                  <div class="card-actions">
+                    ${stage.next ? `<button class="move-btn" onclick="updateStatus('${order.id}', '${stage.next}')">${STAGES.find(s => s.key === stage.next).label} &rarr;</button>` : ''}
+                    ${stage.key !== 'delivered' ? `<button class="move-btn" onclick="updateStatus('${order.id}', 'cancelled')" style="color:var(--red);border-color:var(--red-bg);">Cancel</button>` : ''}
+                  </div>
+                </div>
+              </div>
+            `).join('');
 
-        table.style.display = 'table';
-        body.innerHTML = orders.map(order => `
-          <tr>
-            <td class="order-name">${escapeHtml(order.first_name)} ${escapeHtml(order.last_name)}</td>
-            <td class="order-email">${escapeHtml(order.email)}</td>
-            <td class="order-email">${escapeHtml(order.phone)}</td>
-            <td class="order-address">${escapeHtml(order.address)}, ${escapeHtml(order.city)}, ${escapeHtml(order.state)} ${escapeHtml(order.zip)}</td>
-            <td><span class="badge badge-${order.status}">${order.status}</span></td>
-            <td class="order-date">${formatDate(order.created_at)}</td>
-            <td>
-              <select class="status-select" onchange="updateStatus('${order.id}', this.value)">
-                <option value="pending" ${order.status === 'pending' ? 'selected' : ''}>Pending</option>
-                <option value="confirmed" ${order.status === 'confirmed' ? 'selected' : ''}>Confirmed</option>
-                <option value="shipped" ${order.status === 'shipped' ? 'selected' : ''}>Shipped</option>
-                <option value="delivered" ${order.status === 'delivered' ? 'selected' : ''}>Delivered</option>
-                <option value="cancelled" ${order.status === 'cancelled' ? 'selected' : ''}>Cancelled</option>
-              </select>
-            </td>
-          </tr>
-        `).join('');
-
-        updateStats(orders);
+          return `
+            <div class="column ${stage.class}">
+              <div class="column-header">
+                <span class="column-title">${stage.label}</span>
+                <span class="column-count">${stageOrders.length}</span>
+              </div>
+              <div class="column-body">${cards}</div>
+            </div>
+          `;
+        }).join('');
 
       } catch (err) {
-        loading.textContent = 'Failed to load orders.';
+        board.innerHTML = '<div class="loading">Failed to load orders.</div>';
       }
-    }
-
-    function updateStats(orders) {
-      const total = orders.length;
-      const pending = orders.filter(o => o.status === 'pending').length;
-      const confirmed = orders.filter(o => o.status === 'confirmed').length;
-      const active = orders.filter(o => o.status !== 'cancelled').length;
-
-      document.getElementById('stat-total').textContent = total;
-      document.getElementById('stat-pending').textContent = pending;
-      document.getElementById('stat-confirmed').textContent = confirmed;
-      document.getElementById('stat-revenue').textContent = `$${(active * 295).toLocaleString()}`;
     }
 
     async function updateStatus(id, status) {
       try {
         const res = await fetch('/api/orders', {
           method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-          },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ id, status }),
         });
-
-        if (res.ok) {
-          loadOrders();
-        }
+        if (res.ok) loadOrders();
       } catch (err) {
         alert('Failed to update status');
       }
@@ -484,14 +318,16 @@
 
     function formatDate(iso) {
       const d = new Date(iso);
-      return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+      return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
     }
 
     function escapeHtml(str) {
       const div = document.createElement('div');
-      div.textContent = str;
+      div.textContent = str || '';
       return div.innerHTML;
     }
+
+    loadOrders();
   </script>
 </body>
 </html>

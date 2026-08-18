@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Longview — Pre-order Arc</title>
+  <title>Longview — Order Arc</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
@@ -73,6 +73,17 @@
     .summary {
       position: sticky;
       top: 3rem;
+    }
+
+    .summary-watch {
+      width: 200px;
+      margin: 0 auto 2rem;
+    }
+
+    .summary-watch svg {
+      width: 100%;
+      height: auto;
+      filter: drop-shadow(0 15px 40px rgba(0,0,0,0.08));
     }
 
     .summary-label {
@@ -318,7 +329,47 @@
   <main id="main-content">
     <!-- Order Summary -->
     <div class="summary">
-      <div class="summary-label">Pre-order</div>
+      <div class="summary-watch">
+        <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+          <rect x="178" y="0" width="44" height="55" rx="5" fill="#3a3a3a" />
+          <rect x="178" y="345" width="44" height="55" rx="5" fill="#3a3a3a" />
+          <circle cx="200" cy="200" r="142" fill="#1a1a1a" />
+          <circle cx="200" cy="200" r="132" fill="#f5f2ed" />
+          <g fill="none" stroke="#1a1a1a" stroke-width="1.2">
+            <line x1="200" y1="76" x2="200" y2="92" />
+            <line x1="200" y1="76" x2="200" y2="90" transform="rotate(36 200 200)" />
+            <line x1="200" y1="76" x2="200" y2="90" transform="rotate(72 200 200)" />
+            <line x1="200" y1="76" x2="200" y2="90" transform="rotate(108 200 200)" />
+            <line x1="200" y1="76" x2="200" y2="90" transform="rotate(144 200 200)" />
+            <line x1="200" y1="76" x2="200" y2="92" transform="rotate(180 200 200)" />
+            <line x1="200" y1="76" x2="200" y2="90" transform="rotate(216 200 200)" />
+            <line x1="200" y1="76" x2="200" y2="90" transform="rotate(252 200 200)" />
+            <line x1="200" y1="76" x2="200" y2="90" transform="rotate(288 200 200)" />
+            <line x1="200" y1="76" x2="200" y2="90" transform="rotate(324 200 200)" />
+          </g>
+          <g font-family="'DM Sans', sans-serif" font-size="11.5" fill="#1a1a1a" text-anchor="middle" font-weight="400">
+            <text x="200" y="108">0</text>
+            <text x="270" y="126" transform="rotate(36 270 122)">10</text>
+            <text x="314" y="174" transform="rotate(72 314 170)">20</text>
+            <text x="318" y="236" transform="rotate(108 318 232)">30</text>
+            <text x="282" y="288" transform="rotate(144 282 284)">40</text>
+            <text x="200" y="308">50</text>
+            <text x="118" y="288" transform="rotate(-144 118 284)">60</text>
+            <text x="82" y="236" transform="rotate(-108 82 232)">70</text>
+            <text x="86" y="174" transform="rotate(-72 86 170)">80</text>
+            <text x="130" y="126" transform="rotate(-36 130 122)">90</text>
+          </g>
+          <text x="200" y="173" font-family="'DM Sans', sans-serif" font-size="8.5" fill="#a3a3a3" text-anchor="middle" letter-spacing="3" font-weight="500">LONGVIEW</text>
+          <text x="200" y="240" font-family="'DM Serif Display', serif" font-size="10" fill="#a3a3a3" text-anchor="middle" letter-spacing="1" font-weight="300" font-style="italic">Arc</text>
+          <g transform="rotate(115 200 200)">
+            <line x1="200" y1="200" x2="200" y2="96" stroke="#b8a089" stroke-width="1.5" stroke-linecap="round" />
+            <circle cx="200" cy="200" r="3.5" fill="#b8a089" />
+          </g>
+          <circle cx="200" cy="200" r="2" fill="#1a1a1a" />
+          <rect x="340" y="193" width="12" height="14" rx="3" fill="#1a1a1a" />
+        </svg>
+      </div>
+      <div class="summary-label">Order</div>
       <h2>Arc</h2>
       <p class="summary-tagline">Your century on your wrist</p>
       <div class="summary-price">$295</div>
@@ -342,7 +393,7 @@
 
     <!-- Checkout Form -->
     <div class="checkout-form">
-      <h3>Reserve yours.</h3>
+      <h3>Place your order.</h3>
 
       <div class="error-msg" id="error-msg"></div>
 
@@ -410,7 +461,7 @@
           </div>
         </div>
 
-        <button type="submit" class="btn-submit" id="submit-btn">Place Pre-order — $295</button>
+        <button type="submit" class="btn-submit" id="submit-btn">Place Order — $295</button>
         <p class="form-note">No charge today. We'll notify you when Arc is ready to ship.</p>
       </form>
     </div>
@@ -465,7 +516,7 @@
         errorMsg.textContent = err.message;
         errorMsg.style.display = 'block';
         submitBtn.disabled = false;
-        submitBtn.textContent = 'Place Pre-order — $295';
+        submitBtn.textContent = 'Place Order — $295';
       }
     });
   </script>
