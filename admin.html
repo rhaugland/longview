@@ -505,7 +505,7 @@
   <script>
     const STAGES = [
       { key: 'pending', label: 'New', dot: 'dot-pending', sel: 'sel-pending' },
-      { key: 'confirmed', label: 'Confirmed', dot: 'dot-confirmed', sel: 'sel-confirmed' },
+      { key: 'confirmed', label: 'Processing', dot: 'dot-confirmed', sel: 'sel-confirmed' },
       { key: 'shipped', label: 'Shipped', dot: 'dot-shipped', sel: 'sel-shipped' },
       { key: 'delivered', label: 'Delivered', dot: 'dot-delivered', sel: 'sel-delivered' },
     ];
@@ -710,10 +710,14 @@
 
     async function claimOrder(id, owner) {
       try {
+        // When claiming, auto-move to confirmed; when unclaiming, move back to pending
+        const body = owner
+          ? { id, owner, status: 'confirmed' }
+          : { id, owner, status: 'pending' };
         const res = await fetch('/api/orders', {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ id, owner }),
+          body: JSON.stringify(body),
         });
         if (res.ok) loadOrders();
       } catch (err) {
@@ -722,6 +726,12 @@
     }
 
     async function updateStatus(id, status) {
+      const order = allOrders.find(o => o.id === id);
+      if (order && order.status === 'pending' && !order.owner && status !== 'pending') {
+        alert('Someone must claim this order before it can be moved.');
+        render();
+        return;
+      }
       try {
         const res = await fetch('/api/orders', {
           method: 'PATCH',
