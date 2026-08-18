@@ -18,16 +18,17 @@
       --gray-500: #737373;
       --gray-600: #525252;
       --warm: #b8a089;
+      --warm-bg: #faf6f1;
       --green: #16a34a;
-      --green-bg: #f0fdf4;
+      --green-light: #bbf7d0;
       --blue: #2563eb;
-      --blue-bg: #eff6ff;
+      --blue-light: #bfdbfe;
       --yellow: #ca8a04;
-      --yellow-bg: #fefce8;
+      --yellow-light: #fef08a;
+      --purple: #9333ea;
+      --purple-light: #e9d5ff;
       --red: #dc2626;
       --red-bg: #fef2f2;
-      --purple: #9333ea;
-      --purple-bg: #faf5ff;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -35,14 +36,15 @@
     body {
       font-family: 'DM Sans', -apple-system, sans-serif;
       font-weight: 300;
-      background: var(--gray-50);
+      background: var(--warm-bg);
       color: var(--black);
       -webkit-font-smoothing: antialiased;
       min-height: 100vh;
     }
 
+    /* Nav */
     .dash-nav {
-      padding: 1.2rem 2rem;
+      padding: 1.2rem 2.5rem;
       background: var(--white);
       border-bottom: 1px solid var(--gray-200);
       display: flex;
@@ -55,8 +57,6 @@
       align-items: center;
       gap: 1.5rem;
     }
-
-    .dash-nav-left svg { color: var(--black); }
 
     .dash-nav-left span {
       font-size: 0.75rem;
@@ -83,113 +83,27 @@
       color: var(--black);
     }
 
-    /* Kanban columns */
-    .board {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1rem;
-      padding: 2rem;
-      max-width: 1400px;
+    /* Content */
+    .content {
+      max-width: 1300px;
       margin: 0 auto;
-      align-items: start;
+      padding: 2rem 2.5rem;
     }
 
-    .column {
-      background: var(--white);
-      border: 1px solid var(--gray-200);
-      border-radius: 10px;
-      overflow: hidden;
-    }
-
-    .column-header {
-      padding: 1rem 1.2rem;
-      border-bottom: 1px solid var(--gray-200);
+    /* Filter tabs */
+    .filters {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
     }
 
-    .column-title {
-      font-size: 0.7rem;
-      font-weight: 500;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--gray-500);
-    }
-
-    .column-count {
-      font-size: 0.7rem;
-      font-weight: 500;
-      color: var(--gray-400);
-      background: var(--gray-100);
-      padding: 0.15rem 0.5rem;
-      border-radius: 50px;
-    }
-
-    .column-body {
-      padding: 0.75rem;
-      min-height: 200px;
-    }
-
-    /* Order cards */
-    .order-card {
-      background: var(--gray-50);
-      border: 1px solid var(--gray-200);
-      border-radius: 8px;
-      padding: 1rem;
-      margin-bottom: 0.6rem;
-      transition: box-shadow 0.2s;
-    }
-
-    .order-card:last-child { margin-bottom: 0; }
-
-    .order-card:hover {
-      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-    }
-
-    .card-name {
-      font-size: 0.88rem;
-      font-weight: 400;
-      margin-bottom: 0.3rem;
-    }
-
-    .card-email {
-      font-size: 0.75rem;
-      color: var(--gray-500);
-      margin-bottom: 0.5rem;
-    }
-
-    .card-detail {
-      font-size: 0.72rem;
-      color: var(--gray-400);
-      line-height: 1.5;
-    }
-
-    .card-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 0.75rem;
-      padding-top: 0.6rem;
-      border-top: 1px solid var(--gray-200);
-    }
-
-    .card-date {
-      font-size: 0.7rem;
-      color: var(--gray-400);
-    }
-
-    .card-actions {
-      display: flex;
-      gap: 0.4rem;
-    }
-
-    .move-btn {
+    .filter-tab {
       font-family: 'DM Sans', sans-serif;
-      font-size: 0.65rem;
-      font-weight: 500;
-      padding: 0.25rem 0.5rem;
-      border-radius: 4px;
+      font-size: 0.8rem;
+      font-weight: 400;
+      padding: 0.45rem 1rem;
+      border-radius: 50px;
       border: 1px solid var(--gray-200);
       background: var(--white);
       color: var(--gray-600);
@@ -197,38 +111,149 @@
       transition: all 0.2s;
     }
 
-    .move-btn:hover {
+    .filter-tab:hover {
+      border-color: var(--gray-500);
+    }
+
+    .filter-tab.active {
+      background: var(--black);
+      color: var(--white);
       border-color: var(--black);
+    }
+
+    .filter-count {
+      font-size: 0.7rem;
+      margin-left: 0.2rem;
+      opacity: 0.6;
+    }
+
+    /* Status groups */
+    .status-group {
+      margin-bottom: 2.5rem;
+    }
+
+    .group-header {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .group-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .dot-pending { background: var(--yellow); }
+    .dot-confirmed { background: var(--blue); }
+    .dot-shipped { background: var(--purple); }
+    .dot-delivered { background: var(--green); }
+
+    .group-title {
+      font-size: 0.95rem;
+      font-weight: 500;
       color: var(--black);
     }
 
-    .empty-col {
-      text-align: center;
-      padding: 2rem 1rem;
+    .group-count {
+      font-size: 0.82rem;
       color: var(--gray-400);
+      font-weight: 300;
+    }
+
+    /* Table */
+    .orders-table {
+      width: 100%;
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    thead { background: var(--gray-100); }
+
+    th {
+      text-align: left;
+      padding: 0.7rem 1rem;
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gray-500);
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    td {
+      padding: 0.9rem 1rem;
+      font-size: 0.84rem;
+      border-bottom: 1px solid var(--gray-100);
+      vertical-align: middle;
+    }
+
+    tr:last-child td { border-bottom: none; }
+    tr:hover { background: var(--gray-50); }
+
+    .td-name { font-weight: 400; }
+
+    .td-sub {
+      font-size: 0.75rem;
+      color: var(--gray-500);
+      margin-top: 0.15rem;
+    }
+
+    .td-muted {
+      color: var(--gray-500);
       font-size: 0.8rem;
     }
+
+    .td-price {
+      font-weight: 500;
+    }
+
+    /* Status select */
+    .status-select {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 500;
+      padding: 0.3rem 0.6rem;
+      border-radius: 6px;
+      border: 1px solid;
+      cursor: pointer;
+      outline: none;
+      -webkit-appearance: none;
+      background: none;
+    }
+
+    .sel-pending { border-color: var(--yellow-light); color: var(--yellow); background: #fefce8; }
+    .sel-confirmed { border-color: var(--blue-light); color: var(--blue); background: #eff6ff; }
+    .sel-shipped { border-color: var(--purple-light); color: var(--purple); background: #faf5ff; }
+    .sel-delivered { border-color: var(--green-light); color: var(--green); background: #f0fdf4; }
 
     .loading {
       text-align: center;
       padding: 4rem 2rem;
       color: var(--gray-400);
       font-size: 0.85rem;
-      grid-column: 1 / -1;
     }
 
-    /* Column accent colors */
-    .col-new .column-header { border-bottom-color: var(--yellow); }
-    .col-pending .column-header { border-bottom-color: var(--blue); }
-    .col-shipped .column-header { border-bottom-color: var(--purple); }
-    .col-delivered .column-header { border-bottom-color: var(--green); }
-
-    @media (max-width: 900px) {
-      .board { grid-template-columns: 1fr 1fr; }
+    .empty-all {
+      text-align: center;
+      padding: 5rem 2rem;
+      color: var(--gray-400);
+      font-size: 0.9rem;
     }
 
-    @media (max-width: 580px) {
-      .board { grid-template-columns: 1fr; }
+    @media (max-width: 768px) {
+      .content { padding: 1.5rem 1rem; }
+      .dash-nav { padding: 1rem 1rem; }
+      .orders-table { overflow-x: auto; }
+      table { min-width: 700px; }
     }
   </style>
 </head>
@@ -242,64 +267,124 @@
     <button class="refresh-btn" onclick="loadOrders()">Refresh</button>
   </div>
 
-  <div class="board" id="board">
-    <div class="loading" id="loading">Loading orders...</div>
+  <div class="content" id="content">
+    <div class="loading">Loading orders...</div>
   </div>
 
   <script>
     const STAGES = [
-      { key: 'pending', label: 'New', class: 'col-new', next: 'confirmed' },
-      { key: 'confirmed', label: 'Confirmed', class: 'col-pending', next: 'shipped' },
-      { key: 'shipped', label: 'Shipped', class: 'col-shipped', next: 'delivered' },
-      { key: 'delivered', label: 'Delivered', class: 'col-delivered', next: null },
+      { key: 'pending', label: 'New', dot: 'dot-pending', sel: 'sel-pending' },
+      { key: 'confirmed', label: 'Confirmed', dot: 'dot-confirmed', sel: 'sel-confirmed' },
+      { key: 'shipped', label: 'Shipped', dot: 'dot-shipped', sel: 'sel-shipped' },
+      { key: 'delivered', label: 'Delivered', dot: 'dot-delivered', sel: 'sel-delivered' },
     ];
 
+    let allOrders = [];
+    let activeFilter = 'all';
+
+    function renderFilters() {
+      const total = allOrders.length;
+      const counts = {};
+      STAGES.forEach(s => counts[s.key] = allOrders.filter(o => o.status === s.key).length);
+
+      return `
+        <div class="filters">
+          <button class="filter-tab ${activeFilter === 'all' ? 'active' : ''}" onclick="setFilter('all')">All<span class="filter-count">${total}</span></button>
+          ${STAGES.map(s => `
+            <button class="filter-tab ${activeFilter === s.key ? 'active' : ''}" onclick="setFilter('${s.key}')">${s.label}<span class="filter-count">${counts[s.key]}</span></button>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    function renderGroup(stage, orders) {
+      if (orders.length === 0) return '';
+
+      const rows = orders.map(order => `
+        <tr>
+          <td>
+            <div class="td-name">${esc(order.first_name)} ${esc(order.last_name)}</div>
+            <div class="td-sub">${esc(order.email)}</div>
+          </td>
+          <td class="td-muted">${esc(order.phone)}</td>
+          <td class="td-muted">${esc(order.address)}, ${esc(order.city)}, ${esc(order.state)} ${esc(order.zip)}</td>
+          <td class="td-price">$295</td>
+          <td>
+            <select class="status-select ${stage.sel}" onchange="updateStatus('${order.id}', this.value)">
+              ${STAGES.map(s => `<option value="${s.key}" ${order.status === s.key ? 'selected' : ''}>${s.label}</option>`).join('')}
+              <option value="cancelled" ${order.status === 'cancelled' ? 'selected' : ''}>Cancelled</option>
+            </select>
+          </td>
+          <td class="td-muted">${formatDate(order.created_at)}</td>
+        </tr>
+      `).join('');
+
+      return `
+        <div class="status-group">
+          <div class="group-header">
+            <span class="group-dot ${stage.dot}"></span>
+            <span class="group-title">${stage.label}</span>
+            <span class="group-count">${orders.length} order${orders.length !== 1 ? 's' : ''}</span>
+          </div>
+          <div class="orders-table">
+            <table>
+              <thead>
+                <tr>
+                  <th>Customer</th>
+                  <th>Phone</th>
+                  <th>Shipping</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody>${rows}</tbody>
+            </table>
+          </div>
+        </div>
+      `;
+    }
+
+    function render() {
+      const content = document.getElementById('content');
+
+      if (allOrders.length === 0) {
+        content.innerHTML = renderFilters() + '<div class="empty-all">No orders yet. They\'ll show up here.</div>';
+        return;
+      }
+
+      const visibleStages = activeFilter === 'all' ? STAGES : STAGES.filter(s => s.key === activeFilter);
+
+      let groups = visibleStages.map(stage => {
+        const stageOrders = allOrders.filter(o => o.status === stage.key);
+        return renderGroup(stage, stageOrders);
+      }).join('');
+
+      if (!groups.trim()) {
+        groups = '<div class="empty-all">No orders in this status.</div>';
+      }
+
+      content.innerHTML = renderFilters() + groups;
+    }
+
+    function setFilter(key) {
+      activeFilter = key;
+      render();
+    }
+
     async function loadOrders() {
-      const board = document.getElementById('board');
-      board.innerHTML = '<div class="loading">Loading orders...</div>';
+      const content = document.getElementById('content');
+      content.innerHTML = '<div class="loading">Loading orders...</div>';
 
       try {
         const res = await fetch('/api/orders');
         if (!res.ok) throw new Error('Failed to load');
 
-        const { orders } = await res.json();
-
-        board.innerHTML = STAGES.map(stage => {
-          const stageOrders = orders.filter(o => o.status === stage.key);
-
-          const cards = stageOrders.length === 0
-            ? '<div class="empty-col">No orders</div>'
-            : stageOrders.map(order => `
-              <div class="order-card">
-                <div class="card-name">${escapeHtml(order.first_name)} ${escapeHtml(order.last_name)}</div>
-                <div class="card-email">${escapeHtml(order.email)}</div>
-                <div class="card-detail">
-                  ${escapeHtml(order.phone)}<br>
-                  ${escapeHtml(order.address)}, ${escapeHtml(order.city)}, ${escapeHtml(order.state)} ${escapeHtml(order.zip)}
-                </div>
-                <div class="card-footer">
-                  <span class="card-date">${formatDate(order.created_at)}</span>
-                  <div class="card-actions">
-                    ${stage.next ? `<button class="move-btn" onclick="updateStatus('${order.id}', '${stage.next}')">${STAGES.find(s => s.key === stage.next).label} &rarr;</button>` : ''}
-                    ${stage.key !== 'delivered' ? `<button class="move-btn" onclick="updateStatus('${order.id}', 'cancelled')" style="color:var(--red);border-color:var(--red-bg);">Cancel</button>` : ''}
-                  </div>
-                </div>
-              </div>
-            `).join('');
-
-          return `
-            <div class="column ${stage.class}">
-              <div class="column-header">
-                <span class="column-title">${stage.label}</span>
-                <span class="column-count">${stageOrders.length}</span>
-              </div>
-              <div class="column-body">${cards}</div>
-            </div>
-          `;
-        }).join('');
-
+        const data = await res.json();
+        allOrders = data.orders;
+        render();
       } catch (err) {
-        board.innerHTML = '<div class="loading">Failed to load orders.</div>';
+        content.innerHTML = '<div class="loading">Failed to load orders.</div>';
       }
     }
 
@@ -321,7 +406,7 @@
       return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
     }
 
-    function escapeHtml(str) {
+    function esc(str) {
       const div = document.createElement('div');
       div.textContent = str || '';
       return div.innerHTML;
