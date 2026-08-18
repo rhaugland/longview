@@ -440,6 +440,30 @@
 
     .unclaim-btn:hover { color: var(--red); }
 
+    .ship-btn {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 400;
+      padding: 0.3rem 0.7rem;
+      border-radius: 4px;
+      border: 1px solid var(--purple-light);
+      background: #faf5ff;
+      color: var(--purple);
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .ship-btn:hover {
+      background: var(--purple);
+      color: var(--white);
+    }
+
+    .ship-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
     .loading {
       text-align: center;
       padding: 4rem 2rem;
@@ -532,12 +556,22 @@
       if (orders.length === 0) return '';
 
       const showOwner = stage.key === 'pending';
+      const showShipAction = stage.key === 'confirmed';
+      const showTracking = stage.key === 'shipped' || stage.key === 'delivered';
 
       const rows = orders.map(order => {
         const ownerCell = showOwner
           ? order.owner
             ? `<td><div class="owner-cell"><span class="owner-dot"></span><span class="owner-name">${esc(order.owner)}</span></div><button class="unclaim-btn" onclick="claimOrder('${order.id}', null)">unclaim</button></td>`
             : `<td><select class="claim-btn" onchange="if(this.value) claimOrder('${order.id}', this.value)"><option value="">Claim...</option>${teamMembers.map(m => '<option value="' + esc(m.name) + '">' + esc(m.name) + '</option>').join('')}</select></td>`
+          : '';
+
+        const shipCell = showShipAction
+          ? `<td><button class="ship-btn" id="ship-${order.id}" onclick="createLabel('${order.id}')">Create Label</button></td>`
+          : '';
+
+        const trackingCell = showTracking
+          ? `<td class="td-muted">${order.tracking_number ? esc(order.tracking_number) : '—'}</td>`
           : '';
 
         return `
@@ -549,6 +583,8 @@
             <td class="td-muted">${esc(order.phone)}</td>
             <td class="td-muted">${esc(order.address)}, ${esc(order.city)}, ${esc(order.state)} ${esc(order.zip)}</td>
             ${ownerCell}
+            ${shipCell}
+            ${trackingCell}
             <td class="td-price">$295</td>
             <td>
               <select class="status-select ${stage.sel}" onchange="updateStatus('${order.id}', this.value)">
@@ -576,6 +612,8 @@
                   <th>Phone</th>
                   <th>Shipping</th>
                   ${showOwner ? '<th>Owner</th>' : ''}
+                  ${showShipAction ? '<th>Label</th>' : ''}
+                  ${showTracking ? '<th>Tracking</th>' : ''}
                   <th>Amount</th>
                   <th>Status</th>
                   <th>Date</th>
@@ -722,6 +760,28 @@
         if (res.ok) loadOrders();
       } catch (err) {
         alert('Failed to update owner');
+      }
+    }
+
+    async function createLabel(orderId) {
+      const btn = document.getElementById('ship-' + orderId);
+      if (btn) { btn.textContent = 'Creating...'; btn.disabled = true; }
+      try {
+        const res = await fetch('/api/shipping', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ orderId }),
+        });
+        const data = await res.json();
+        if (res.ok) {
+          loadOrders();
+        } else {
+          alert(data.error || 'Failed to create label');
+          if (btn) { btn.textContent = 'Create Label'; btn.disabled = false; }
+        }
+      } catch (err) {
+        alert('Failed to create shipping label');
+        if (btn) { btn.textContent = 'Create Label'; btn.disabled = false; }
       }
     }
 
