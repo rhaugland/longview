@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Longview — Pre-order Arc</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --black: #0a0a0a;
+      --white: #fafafa;
+      --gray-100: #f5f5f5;
+      --gray-200: #e5e5e5;
+      --gray-400: #a3a3a3;
+      --gray-500: #737373;
+      --gray-600: #525252;
+      --warm: #b8a089;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', -apple-system, sans-serif;
+      font-weight: 300;
+      background: var(--white);
+      color: var(--black);
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    nav {
+      padding: 1.2rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .nav-logo {
+      color: var(--black);
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+    }
+
+    .nav-back {
+      font-size: 0.82rem;
+      color: var(--gray-500);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .nav-back:hover { color: var(--black); }
+
+    main {
+      flex: 1;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 4rem 2rem;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: start;
+    }
+
+    /* Order summary */
+    .summary {
+      position: sticky;
+      top: 3rem;
+    }
+
+    .summary-label {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gray-400);
+      margin-bottom: 1.5rem;
+    }
+
+    .summary h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2.5rem;
+      font-weight: 400;
+      margin-bottom: 0.3rem;
+    }
+
+    .summary-tagline {
+      font-size: 0.95rem;
+      color: var(--gray-500);
+      margin-bottom: 2rem;
+    }
+
+    .summary-price {
+      font-size: 1.5rem;
+      font-weight: 400;
+      margin-bottom: 0.3rem;
+    }
+
+    .summary-note {
+      font-size: 0.8rem;
+      color: var(--gray-400);
+      margin-bottom: 2.5rem;
+    }
+
+    .summary-details {
+      border-top: 1px solid var(--gray-200);
+      padding-top: 1.5rem;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.6rem 0;
+      font-size: 0.85rem;
+    }
+
+    .summary-row .label { color: var(--gray-500); }
+    .summary-row .value { font-weight: 400; }
+
+    .summary-total {
+      border-top: 1px solid var(--gray-200);
+      margin-top: 0.5rem;
+      padding-top: 1rem;
+      font-size: 1rem;
+      font-weight: 500;
+    }
+
+    /* Form */
+    .checkout-form h3 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.3rem;
+      font-weight: 400;
+      margin-bottom: 1.5rem;
+    }
+
+    .form-section {
+      margin-bottom: 2.5rem;
+    }
+
+    .form-section-title {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gray-400);
+      margin-bottom: 1rem;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .form-row.full {
+      grid-template-columns: 1fr;
+    }
+
+    .field {
+      margin-bottom: 1rem;
+    }
+
+    .field label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 400;
+      color: var(--gray-600);
+      margin-bottom: 0.4rem;
+    }
+
+    .field input, .field select {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 300;
+      border: 1px solid var(--gray-200);
+      border-radius: 8px;
+      background: var(--white);
+      color: var(--black);
+      transition: border-color 0.3s;
+      outline: none;
+      -webkit-appearance: none;
+    }
+
+    .field input:focus, .field select:focus {
+      border-color: var(--black);
+    }
+
+    .field input::placeholder {
+      color: var(--gray-400);
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 1rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      background: var(--black);
+      color: var(--white);
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn-submit:hover {
+      background: #262626;
+      transform: scale(1.01);
+    }
+
+    .btn-submit:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .form-note {
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--gray-400);
+      margin-top: 1rem;
+    }
+
+    .error-msg {
+      background: #fef2f2;
+      color: #991b1b;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      margin-bottom: 1.5rem;
+      display: none;
+    }
+
+    /* Success state */
+    .success-state {
+      display: none;
+      text-align: center;
+      grid-column: 1 / -1;
+      padding: 6rem 2rem;
+    }
+
+    .success-state h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2.5rem;
+      font-weight: 400;
+      margin-bottom: 1rem;
+    }
+
+    .success-state p {
+      font-size: 1.05rem;
+      color: var(--gray-500);
+      line-height: 1.7;
+      max-width: 450px;
+      margin: 0 auto;
+    }
+
+    .success-state .order-id {
+      display: inline-block;
+      margin-top: 2rem;
+      font-size: 0.8rem;
+      color: var(--gray-400);
+      letter-spacing: 0.05em;
+    }
+
+    .success-state .back-link {
+      display: inline-block;
+      margin-top: 2rem;
+      font-size: 0.85rem;
+      color: var(--black);
+      text-decoration: none;
+      border-bottom: 1px solid var(--gray-200);
+      padding-bottom: 2px;
+      transition: border-color 0.3s;
+    }
+
+    .success-state .back-link:hover {
+      border-color: var(--black);
+    }
+
+    footer {
+      padding: 2rem 3rem;
+      border-top: 1px solid var(--gray-200);
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--gray-400);
+    }
+
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      main {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+        padding: 2rem 1.5rem;
+      }
+      .summary { position: static; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="/" class="nav-logo">
+      <svg width="120" height="36" viewBox="0 0 160 46">
+        <path d="M 58 12 Q 80 4 102 12" fill="none" stroke="currentColor" stroke-width="0.7" stroke-linecap="round"/>
+        <text x="80" y="35" text-anchor="middle" font-family="'DM Sans', sans-serif" font-size="18" font-weight="500" letter-spacing="1.5" fill="currentColor">longview</text>
+      </svg>
+    </a>
+    <a href="/" class="nav-back">Back to Arc</a>
+  </nav>
+
+  <main id="main-content">
+    <!-- Order Summary -->
+    <div class="summary">
+      <div class="summary-label">Pre-order</div>
+      <h2>Arc</h2>
+      <p class="summary-tagline">Your century on your wrist</p>
+      <div class="summary-price">$295</div>
+      <p class="summary-note">Payment will be collected when Arc ships.</p>
+
+      <div class="summary-details">
+        <div class="summary-row">
+          <span class="label">Arc (First Edition)</span>
+          <span class="value">$295</span>
+        </div>
+        <div class="summary-row">
+          <span class="label">Shipping</span>
+          <span class="value">Free</span>
+        </div>
+        <div class="summary-row summary-total">
+          <span>Total</span>
+          <span>$295</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Checkout Form -->
+    <div class="checkout-form">
+      <h3>Reserve yours.</h3>
+
+      <div class="error-msg" id="error-msg"></div>
+
+      <form id="order-form">
+        <div class="form-section">
+          <div class="form-section-title">Contact</div>
+          <div class="form-row">
+            <div class="field">
+              <label for="firstName">First name</label>
+              <input type="text" id="firstName" name="firstName" required placeholder="John">
+            </div>
+            <div class="field">
+              <label for="lastName">Last name</label>
+              <input type="text" id="lastName" name="lastName" required placeholder="Appleseed">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="field">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" required placeholder="john@example.com">
+            </div>
+            <div class="field">
+              <label for="phone">Phone</label>
+              <input type="tel" id="phone" name="phone" required placeholder="+1 (555) 000-0000">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <div class="form-section-title">Shipping</div>
+          <div class="form-row full">
+            <div class="field">
+              <label for="address">Address</label>
+              <input type="text" id="address" name="address" required placeholder="123 Main St">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="field">
+              <label for="city">City</label>
+              <input type="text" id="city" name="city" required placeholder="Minneapolis">
+            </div>
+            <div class="field">
+              <label for="state">State / Province</label>
+              <input type="text" id="state" name="state" required placeholder="MN">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="field">
+              <label for="zip">ZIP / Postal code</label>
+              <input type="text" id="zip" name="zip" required placeholder="55401">
+            </div>
+            <div class="field">
+              <label for="country">Country</label>
+              <select id="country" name="country" required>
+                <option value="US" selected>United States</option>
+                <option value="CA">Canada</option>
+                <option value="GB">United Kingdom</option>
+                <option value="AU">Australia</option>
+                <option value="DE">Germany</option>
+                <option value="FR">France</option>
+                <option value="JP">Japan</option>
+                <option value="OTHER">Other</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-submit" id="submit-btn">Place Pre-order — $295</button>
+        <p class="form-note">No charge today. We'll notify you when Arc is ready to ship.</p>
+      </form>
+    </div>
+
+    <!-- Success State -->
+    <div class="success-state" id="success-state">
+      <h2>You're in.</h2>
+      <p>We'll reach out when Arc is ready. In the meantime — look up. You have time.</p>
+      <span class="order-id" id="order-id-display"></span>
+      <br>
+      <a href="/" class="back-link">Back to longview</a>
+    </div>
+  </main>
+
+  <footer>&copy; 2026 Longview</footer>
+
+  <script>
+    const form = document.getElementById('order-form');
+    const errorMsg = document.getElementById('error-msg');
+    const submitBtn = document.getElementById('submit-btn');
+    const mainContent = document.getElementById('main-content');
+    const successState = document.getElementById('success-state');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      errorMsg.style.display = 'none';
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Placing order...';
+
+      const data = Object.fromEntries(new FormData(form));
+
+      try {
+        const res = await fetch('/api/orders', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        });
+
+        const result = await res.json();
+
+        if (!res.ok) {
+          throw new Error(result.error || 'Something went wrong');
+        }
+
+        // Show success
+        document.querySelector('.summary').style.display = 'none';
+        document.querySelector('.checkout-form').style.display = 'none';
+        successState.style.display = 'block';
+        document.getElementById('order-id-display').textContent = `Order ${result.orderId}`;
+
+      } catch (err) {
+        errorMsg.textContent = err.message;
+        errorMsg.style.display = 'block';
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Place Pre-order — $295';
+      }
+    });
+  </script>
+</body>
+</html>
