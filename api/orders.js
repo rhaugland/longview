@@ -48,10 +48,25 @@ async function listOrders(req, res) {
 }
 
 async function updateOrder(req, res) {
-  const { id, status } = req.body;
+  const { id, status, owner } = req.body;
 
-  if (!id || !status) {
-    return res.status(400).json({ error: 'Missing id or status' });
+  if (!id) {
+    return res.status(400).json({ error: 'Missing id' });
+  }
+
+  // Owner-only update (claim)
+  if (owner !== undefined && !status) {
+    const rows = await sql`
+      UPDATE orders SET owner = ${owner}, updated_at = now()
+      WHERE id = ${id}
+      RETURNING *
+    `;
+    if (rows.length === 0) return res.status(404).json({ error: 'Order not found' });
+    return res.status(200).json({ success: true, order: rows[0] });
+  }
+
+  if (!status) {
+    return res.status(400).json({ error: 'Missing status' });
   }
 
   const validStatuses = ['pending', 'confirmed', 'shipped', 'delivered', 'cancelled'];
@@ -60,7 +75,7 @@ async function updateOrder(req, res) {
   }
 
   const rows = await sql`
-    UPDATE orders SET status = ${status}, updated_at = now()
+    UPDATE orders SET status = ${status}, owner = COALESCE(${owner || null}, owner), updated_at = now()
     WHERE id = ${id}
     RETURNING *
   `;

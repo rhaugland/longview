@@ -235,6 +235,152 @@
     .sel-shipped { border-color: var(--purple-light); color: var(--purple); background: #faf5ff; }
     .sel-delivered { border-color: var(--green-light); color: var(--green); background: #f0fdf4; }
 
+    /* Nav right */
+    .dash-nav-right {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .team-btn {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.8rem;
+      color: var(--gray-500);
+      background: none;
+      border: 1px solid var(--gray-200);
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .team-btn:hover {
+      border-color: var(--black);
+      color: var(--black);
+    }
+
+    /* Team panel */
+    .team-panel {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 280px;
+      height: 100vh;
+      background: var(--white);
+      border-left: 1px solid var(--gray-200);
+      z-index: 100;
+      box-shadow: -4px 0 20px rgba(0,0,0,0.05);
+    }
+
+    .team-panel-header {
+      padding: 1.2rem 1.5rem;
+      border-bottom: 1px solid var(--gray-200);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .team-panel-title {
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    .team-close {
+      background: none;
+      border: none;
+      font-size: 1.3rem;
+      color: var(--gray-400);
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    .team-close:hover { color: var(--black); }
+
+    .team-member {
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      border-bottom: 1px solid var(--gray-100);
+    }
+
+    .member-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--warm);
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.03em;
+    }
+
+    .member-name {
+      font-size: 0.85rem;
+      font-weight: 400;
+    }
+
+    .member-role {
+      font-size: 0.72rem;
+      color: var(--gray-400);
+    }
+
+    /* Owner in table */
+    .owner-cell {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .owner-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+    }
+
+    .owner-name {
+      font-size: 0.8rem;
+      font-weight: 400;
+    }
+
+    .claim-btn {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 400;
+      padding: 0.25rem 0.6rem;
+      border-radius: 4px;
+      border: 1px solid var(--warm);
+      background: var(--warm-bg);
+      color: var(--warm);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .claim-btn:hover {
+      background: var(--warm);
+      color: var(--white);
+    }
+
+    .unclaim-btn {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.68rem;
+      color: var(--gray-400);
+      background: none;
+      border: none;
+      cursor: pointer;
+      margin-top: 0.15rem;
+      display: block;
+    }
+
+    .unclaim-btn:hover { color: var(--red); }
+
     .loading {
       text-align: center;
       padding: 4rem 2rem;
@@ -264,7 +410,31 @@
       <svg width="140" height="28" viewBox="0 0 180 28"><text x="0" y="20" font-family="'DM Sans', sans-serif" font-size="16" font-weight="300" letter-spacing="2.5" fill="currentColor">long</text><text x="70" y="20" font-family="'DM Sans', sans-serif" font-size="16" font-weight="300" letter-spacing="2.5" fill="#b8a089">view</text></svg>
       <span>Admin</span>
     </div>
-    <button class="refresh-btn" onclick="loadOrders()">Refresh</button>
+    <div class="dash-nav-right">
+      <button class="team-btn" onclick="toggleTeamPanel()">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round">
+          <circle cx="8" cy="5" r="3"/>
+          <path d="M 2 14 C 2 11 5 9 8 9 C 11 9 14 11 14 14"/>
+        </svg>
+        Team
+      </button>
+      <button class="refresh-btn" onclick="loadOrders()">Refresh</button>
+    </div>
+  </div>
+
+  <!-- Team panel -->
+  <div class="team-panel" id="team-panel" style="display:none;">
+    <div class="team-panel-header">
+      <span class="team-panel-title">Team</span>
+      <button class="team-close" onclick="toggleTeamPanel()">&times;</button>
+    </div>
+    <div class="team-member">
+      <div class="member-avatar">RH</div>
+      <div class="member-info">
+        <div class="member-name">Ryan Haugland</div>
+        <div class="member-role">Admin</div>
+      </div>
+    </div>
   </div>
 
   <div class="content" id="content">
@@ -300,24 +470,35 @@
     function renderGroup(stage, orders) {
       if (orders.length === 0) return '';
 
-      const rows = orders.map(order => `
-        <tr>
-          <td>
-            <div class="td-name">${esc(order.first_name)} ${esc(order.last_name)}</div>
-            <div class="td-sub">${esc(order.email)}</div>
-          </td>
-          <td class="td-muted">${esc(order.phone)}</td>
-          <td class="td-muted">${esc(order.address)}, ${esc(order.city)}, ${esc(order.state)} ${esc(order.zip)}</td>
-          <td class="td-price">$295</td>
-          <td>
-            <select class="status-select ${stage.sel}" onchange="updateStatus('${order.id}', this.value)">
-              ${STAGES.map(s => `<option value="${s.key}" ${order.status === s.key ? 'selected' : ''}>${s.label}</option>`).join('')}
-              <option value="cancelled" ${order.status === 'cancelled' ? 'selected' : ''}>Cancelled</option>
-            </select>
-          </td>
-          <td class="td-muted">${formatDate(order.created_at)}</td>
-        </tr>
-      `).join('');
+      const showOwner = stage.key === 'pending';
+
+      const rows = orders.map(order => {
+        const ownerCell = showOwner
+          ? order.owner
+            ? `<td><div class="owner-cell"><span class="owner-dot"></span><span class="owner-name">${esc(order.owner)}</span></div><button class="unclaim-btn" onclick="claimOrder('${order.id}', null)">unclaim</button></td>`
+            : `<td><button class="claim-btn" onclick="claimOrder('${order.id}', 'Ryan Haugland')">Claim</button></td>`
+          : '';
+
+        return `
+          <tr>
+            <td>
+              <div class="td-name">${esc(order.first_name)} ${esc(order.last_name)}</div>
+              <div class="td-sub">${esc(order.email)}</div>
+            </td>
+            <td class="td-muted">${esc(order.phone)}</td>
+            <td class="td-muted">${esc(order.address)}, ${esc(order.city)}, ${esc(order.state)} ${esc(order.zip)}</td>
+            ${ownerCell}
+            <td class="td-price">$295</td>
+            <td>
+              <select class="status-select ${stage.sel}" onchange="updateStatus('${order.id}', this.value)">
+                ${STAGES.map(s => `<option value="${s.key}" ${order.status === s.key ? 'selected' : ''}>${s.label}</option>`).join('')}
+                <option value="cancelled" ${order.status === 'cancelled' ? 'selected' : ''}>Cancelled</option>
+              </select>
+            </td>
+            <td class="td-muted">${formatDate(order.created_at)}</td>
+          </tr>
+        `;
+      }).join('');
 
       return `
         <div class="status-group">
@@ -333,6 +514,7 @@
                   <th>Customer</th>
                   <th>Phone</th>
                   <th>Shipping</th>
+                  ${showOwner ? '<th>Owner</th>' : ''}
                   <th>Amount</th>
                   <th>Status</th>
                   <th>Date</th>
@@ -385,6 +567,24 @@
         render();
       } catch (err) {
         content.innerHTML = '<div class="loading">Failed to load orders.</div>';
+      }
+    }
+
+    function toggleTeamPanel() {
+      const panel = document.getElementById('team-panel');
+      panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+    }
+
+    async function claimOrder(id, owner) {
+      try {
+        const res = await fetch('/api/orders', {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id, owner }),
+        });
+        if (res.ok) loadOrders();
+      } catch (err) {
+        alert('Failed to update owner');
       }
     }
 
