@@ -331,6 +331,64 @@
       color: var(--gray-400);
     }
 
+    /* Team add form */
+    .team-add {
+      padding: 1rem 1.5rem;
+      border-top: 1px solid var(--gray-200);
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .team-input {
+      width: 100%;
+      padding: 0.55rem 0.75rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.82rem;
+      border: 1px solid var(--gray-200);
+      border-radius: 6px;
+      outline: none;
+      background: var(--white);
+    }
+
+    .team-input:focus { border-color: var(--black); }
+
+    .team-select {
+      -webkit-appearance: none;
+      cursor: pointer;
+      color: var(--gray-600);
+    }
+
+    .add-member-btn {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 400;
+      padding: 0.55rem;
+      border-radius: 6px;
+      border: none;
+      background: var(--black);
+      color: var(--white);
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .add-member-btn:hover { background: #262626; }
+
+    .member-remove {
+      background: none;
+      border: none;
+      color: var(--gray-400);
+      font-size: 1rem;
+      cursor: pointer;
+      line-height: 1;
+      margin-left: auto;
+      padding: 0 0.25rem;
+    }
+
+    .member-remove:hover { color: var(--red); }
+
+    .member-info { flex: 1; }
+
     /* Owner in table */
     .owner-cell {
       display: flex;
@@ -361,11 +419,12 @@
       color: var(--warm);
       cursor: pointer;
       transition: all 0.2s;
+      -webkit-appearance: none;
+      outline: none;
     }
 
-    .claim-btn:hover {
-      background: var(--warm);
-      color: var(--white);
+    .claim-btn:hover, .claim-btn:focus {
+      border-color: var(--warm);
     }
 
     .unclaim-btn {
@@ -428,12 +487,14 @@
       <span class="team-panel-title">Team</span>
       <button class="team-close" onclick="toggleTeamPanel()">&times;</button>
     </div>
-    <div class="team-member">
-      <div class="member-avatar">RH</div>
-      <div class="member-info">
-        <div class="member-name">Ryan Haugland</div>
-        <div class="member-role">Admin</div>
-      </div>
+    <div id="team-list"></div>
+    <div class="team-add">
+      <input type="text" id="new-member-name" placeholder="Name" class="team-input">
+      <select id="new-member-role" class="team-input team-select">
+        <option value="Worker">Worker</option>
+        <option value="Admin">Admin</option>
+      </select>
+      <button class="add-member-btn" onclick="addMember()">Add</button>
     </div>
   </div>
 
@@ -476,7 +537,7 @@
         const ownerCell = showOwner
           ? order.owner
             ? `<td><div class="owner-cell"><span class="owner-dot"></span><span class="owner-name">${esc(order.owner)}</span></div><button class="unclaim-btn" onclick="claimOrder('${order.id}', null)">unclaim</button></td>`
-            : `<td><button class="claim-btn" onclick="claimOrder('${order.id}', 'Ryan Haugland')">Claim</button></td>`
+            : `<td><select class="claim-btn" onchange="if(this.value) claimOrder('${order.id}', this.value)"><option value="">Claim...</option>${teamMembers.map(m => '<option value="' + esc(m.name) + '">' + esc(m.name) + '</option>').join('')}</select></td>`
           : '';
 
         return `
@@ -570,9 +631,81 @@
       }
     }
 
+    let teamMembers = [];
+
     function toggleTeamPanel() {
       const panel = document.getElementById('team-panel');
-      panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+      const showing = panel.style.display === 'none';
+      panel.style.display = showing ? 'block' : 'none';
+      if (showing) loadTeam();
+    }
+
+    async function loadTeam() {
+      try {
+        const res = await fetch('/api/team');
+        if (!res.ok) throw new Error('Failed to load');
+        const data = await res.json();
+        teamMembers = data.members;
+        renderTeamList();
+        render(); // re-render orders so claim dropdowns update
+      } catch (err) {
+        document.getElementById('team-list').innerHTML = '<div style="padding:1rem 1.5rem;color:var(--gray-400);font-size:0.82rem;">Failed to load team.</div>';
+      }
+    }
+
+    function renderTeamList() {
+      const list = document.getElementById('team-list');
+      if (teamMembers.length === 0) {
+        list.innerHTML = '<div style="padding:1rem 1.5rem;color:var(--gray-400);font-size:0.82rem;">No team members yet.</div>';
+        return;
+      }
+      list.innerHTML = teamMembers.map(m => {
+        const initials = m.name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+        return `
+          <div class="team-member">
+            <div class="member-avatar">${esc(initials)}</div>
+            <div class="member-info">
+              <div class="member-name">${esc(m.name)}</div>
+              <div class="member-role">${esc(m.role)}</div>
+            </div>
+            <button class="member-remove" onclick="removeMember('${m.id}')" title="Remove">&times;</button>
+          </div>
+        `;
+      }).join('');
+    }
+
+    async function addMember() {
+      const nameInput = document.getElementById('new-member-name');
+      const roleSelect = document.getElementById('new-member-role');
+      const name = nameInput.value.trim();
+      if (!name) return;
+
+      try {
+        const res = await fetch('/api/team', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, role: roleSelect.value }),
+        });
+        if (res.ok) {
+          nameInput.value = '';
+          loadTeam();
+        }
+      } catch (err) {
+        alert('Failed to add member');
+      }
+    }
+
+    async function removeMember(id) {
+      try {
+        const res = await fetch('/api/team', {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id }),
+        });
+        if (res.ok) loadTeam();
+      } catch (err) {
+        alert('Failed to remove member');
+      }
     }
 
     async function claimOrder(id, owner) {
@@ -612,7 +745,10 @@
       return div.innerHTML;
     }
 
-    loadOrders();
+    // Load team first so claim dropdowns are populated, then orders
+    fetch('/api/team').then(r => r.json()).then(data => {
+      teamMembers = data.members || [];
+    }).catch(() => {}).finally(() => loadOrders());
   </script>
 </body>
 </html>
